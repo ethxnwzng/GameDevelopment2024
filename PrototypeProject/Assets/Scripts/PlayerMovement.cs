@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private LayerMask jumpableGround;
+    //如果你在 by Schoolgirl ByeBye is such a good song
 
     private enum MovementState { idle, running, jumping, falling }
     private MovementState state = MovementState.idle;
@@ -90,4 +91,7 @@ public class PlayerMovement : MonoBehaviour
     {
         return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround); //casts a box against colliders in the scene, returning the first collider in contact with it
     }
+
+    public Weapon weapon { get => weapon; set => weapon = value; }
+
 }
