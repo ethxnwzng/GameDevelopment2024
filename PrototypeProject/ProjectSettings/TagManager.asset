@@ -7,6 +7,7 @@ TagManager:
   - Melon
   - Collectible
   - Trap
+  - Platform
   layers:
   - Default
   - TransparentFX

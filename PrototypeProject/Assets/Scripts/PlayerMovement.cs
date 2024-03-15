@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private LayerMask jumpableGround;
+    [SerializeField] private bool jumpable;
     //如果你在 by Schoolgirl ByeBye is such a good song
 
     private enum MovementState { idle, running, jumping, falling }
@@ -28,6 +29,8 @@ public class PlayerMovement : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         coll = GetComponent<BoxCollider2D>();
         jumpableGround = GetComponent<LayerMask>();
+
+        jumpable = false;
     }
 
     // Update is called once per frame
@@ -37,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
         dirX = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
 
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        if (Input.GetButtonDown("Jump") && (IsGrounded() || jumpable))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             //float varTime = Time.deltaTime;
@@ -92,6 +95,14 @@ public class PlayerMovement : MonoBehaviour
         return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround); //casts a box against colliders in the scene, returning the first collider in contact with it
     }
 
-    public Weapon weapon { get => weapon; set => weapon = value; }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            jumpable = true;
+        }
+        
+    }
 
 }
